@@ -45,14 +45,14 @@
             
             <!-- Juego 2 -->
             <div class="game-card" data-product-id="2">
-                <img src="{{ asset('storage/images/ERNR.jpg') }}" alt="Juego 2" class="game-image">
+                <img src="{{ asset('storage/images/ffx.jpg') }}" alt="Juego 2" class="game-image">
                 <button class="view-product">Ver producto</button>
                 <button class="add-to-cart">Añadir al carrito</button>
             </div>
             
             <!-- Juego 3 -->
             <div class="game-card" data-product-id="3">
-                <img src="{{ asset('storage/images/ffx.jpg') }}" alt="Juego 3" class="game-image">
+                <img src="{{ asset('storage/images/ERNR.jpg') }}" alt="Juego 3" class="game-image">
                 <button class="view-product">Ver producto</button>
                 <button class="add-to-cart">Añadir al carrito</button>
             </div>
