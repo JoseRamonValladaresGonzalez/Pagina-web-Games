@@ -1,26 +1,38 @@
 <x-app-layout>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+    </head>
+
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
+        <div class="cyber-header">
+            <h2 class="cyber-title">
+                {{ __('Profile') }}
+            </h2>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
+    <div class="cyber-profile-container">
+        <div class="scanline"></div>
+        
+        <div class="cyber-profile-content">
+            <!-- Actualizar información -->
+            <div class="cyber-section">
+                <div class="cyber-form-box">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            <!-- Actualizar contraseña -->
+            <div class="cyber-section">
+                <div class="cyber-form-box">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            <!-- Eliminar cuenta -->
+            <div class="cyber-section">
+                <div class="cyber-form-box">
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
