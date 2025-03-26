@@ -35,7 +35,9 @@
                     <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
                         <i class="fas fa-store"></i> Tienda
                     </a>
-
+                    <a href="{{ route('orders.index') }}" class="nav-link">
+    <i class="fas fa-box-open"></i> Mis Pedidos
+</a>
                     <!-- Categorías: menú desplegable al pasar el ratón -->
                     <div class="relative group">
                         <button type="button" class="nav-link flex items-center">
@@ -180,32 +182,28 @@
 
     <!-- Script para el AJAX y navegación al producto -->
     <script>
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        document.querySelectorAll('.add-to-cart').forEach(function(button) {
-            button.addEventListener('click', function() {
-                const gameCard = this.closest('.game-card');
-                const productId = gameCard.getAttribute('data-product-id');
-                const image = gameCard.querySelector('img').getAttribute('src');
-
-                fetch("{{ route('cart.add') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        body: JSON.stringify({
-                            product_id: productId,
-                            image: image
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.message);
-                    })
-                    .catch(error => console.error('Error:', error));
-            });
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); 
+     document.querySelectorAll('.add-to-cart').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const gameCard = this.closest('.game-card');
+        const productId = gameCard.getAttribute('data-product-id');
+        
+        fetch("{{ route('cart.add') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                product_id: productId  // Solo enviar ID (la imagen se obtiene del modelo)
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);  // Mensaje actualizado del controlador
         });
+    });
+});
     </script>
 </body>
 

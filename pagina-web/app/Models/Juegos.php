@@ -17,4 +17,8 @@ class Juegos extends Model
     public function categoria(){
         return $this->belongsTo(Categorias::class);
     }
+
+    public function orderItems() {
+        return $this->hasMany(OrderItem::class);
+    }
 }

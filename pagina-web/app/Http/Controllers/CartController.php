@@ -2,57 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Juegos;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    // Agregar producto al carrito usando datos simulados
-    public function add(Request $request)
+    public function addToCart(Request $request)
     {
-        $productId = $request->input('product_id');
-        $image = $request->input('image');
-
-        // Datos simulados para el producto
-        $product = [
-            'id'       => $productId,
-            'name'     => 'Juego ' . $productId, // Nombre simulado
-            'price'    => 10.00,                // Precio de ejemplo
-            'quantity' => 1,
-            'image'    => $image,
-        ];
-
-        // Obtener el carrito actual de la sesión, o crear uno nuevo si no existe
-        $cart = session()->get('cart', []);
-
-        // Si el producto ya existe en el carrito, se incrementa la cantidad
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity']++;
-        } else {
-            $cart[$productId] = $product;
+        try {
+            $request->validate([
+                'product_id' => 'required|integer|exists:juegos,id'
+            ]);
+            
+            $juego = Juegos::findOrFail($request->product_id);
+            
+            $cart = session()->get('cart', []);
+            
+            if(isset($cart[$juego->id])) {
+                $cart[$juego->id]['quantity']++;
+            } else {
+                $cart[$juego->id] = [
+                    'product_id' => $juego->id,
+                    'name' => $juego->nombre, // Asumiendo que el campo se llama 'nombre'
+                    'price' => $juego->precio,
+                    'quantity' => 1,
+                    'image' => $juego->imagen
+                ];
+            }
+            
+            session()->put('cart', $cart);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Juego agregado al carrito'
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Error: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Guardar el carrito actualizado en la sesión
-        session()->put('cart', $cart);
-
-        return response()->json([
-            'message' => 'Producto añadido al carrito',
-            'cart' => $cart
-        ]);
     }
 
-    // Mostrar el contenido del carrito
     public function index()
     {
         $cart = session()->get('cart', []);
         return view('cart.index', compact('cart'));
     }
+
     public function clear()
-{
-    session()->forget('cart');
-
-    return response()->json([
-        'message' => 'Carrito vaciado correctamente'
-    ]);
-}
-
+    {
+        try {
+            session()->forget('cart');
+            return response()->json([
+                'success' => true,
+                'message' => 'Carrito vaciado'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
