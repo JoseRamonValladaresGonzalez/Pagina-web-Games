@@ -11,7 +11,7 @@ class OrderItem extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function game() {
+    public function juego() {
         return $this->belongsTo(Juegos::class, 'juego_id');
     }
 }

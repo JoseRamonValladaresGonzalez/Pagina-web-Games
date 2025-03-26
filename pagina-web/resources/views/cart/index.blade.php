@@ -16,7 +16,6 @@
             padding: 20px;
             min-height: 100vh;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;

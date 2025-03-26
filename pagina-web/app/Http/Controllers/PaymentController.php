@@ -22,15 +22,18 @@ class PaymentController extends Controller
     {
         // Validación mejorada
         $validated = $request->validate([
-            'card_number' => 'required|string|min:16|max:19',
+            'card_number' => 'required|string|max:19',
             'expiry_date' => 'required|date_format:Y-m',
             'cvv' => 'required|numeric|digits_between:3,4',
             'name' => 'required|string|max:255'
         ]);
+
+     
         DB::beginTransaction();
         try {
             // Verificar existencia de productos
             foreach (session('cart', []) as $item) {
+               
                 $juego = Juegos::findOrFail($item['product_id']);
             }
 
@@ -59,11 +62,17 @@ class PaymentController extends Controller
             ]);
 
             DB::commit();
+      
             
-            session()->forget('cart');
-            return redirect()->route('orders.index')->with('success', '¡Pago realizado con éxito!');
+            session()->forget('cart'); 
 
+            return redirect()->route('orders.index')->with('success', '¡Pago realizado con éxito!');
+            
         } catch (\Exception $e) {
+            dd([
+                'Datos del formulario' => $request->all(),
+                'Error' => $e->getMessage()
+            ]);
             DB::rollBack();
             return back()->with('error', 'Error: ' . $e->getMessage())->withInput();
         }
