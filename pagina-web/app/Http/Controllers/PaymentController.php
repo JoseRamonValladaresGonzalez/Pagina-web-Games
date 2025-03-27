@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\{Juegos, Order, Payment, OrderItem};
+use App\Models\{Juegos, Order, Payment, OrderItem, Categorias};
 
 class PaymentController extends Controller
 {
@@ -15,7 +15,16 @@ class PaymentController extends Controller
             return redirect()->route('cart.index')->with('error', 'El carrito está vacío');
         }
         
-        return view('payment.form');
+        $categorias = Categorias::all();
+        $juegos = Juegos::query();
+    
+        if (request()->has('categoria')) {
+            $juegos->where('categoria_id', request('categoria'));
+        }
+    
+        $juegos = $juegos->get();
+
+        return view('payment.form', compact('juegos', 'categorias'));
     }
 
     public function process(Request $request)

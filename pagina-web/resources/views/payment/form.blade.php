@@ -4,129 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Pago</title>
-    <style>
-        body {
-            background-color: #0a0a0a;
-            font-family: 'Arial', sans-serif;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 2rem;
-            border-radius: 10px;
-            border: 2px solid #0ff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-            max-width: 500px;
-            width: 100%;
-        }
-
-        h2.neon-text {
-            color: #0ff;
-            text-align: center;
-            text-shadow: 0 0 10px #0ff;
-            animation: flicker 1.5s infinite alternate;
-            margin-bottom: 2rem;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        label {
-            color: #0f0;
-            font-weight: bold;
-            text-shadow: 0 0 5px #0f0;
-        }
-
-        input {
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #0ff;
-            border-radius: 5px;
-            padding: 10px;
-            color: #0ff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #0f0;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-        }
-
-        button {
-            background: #000;
-            color: #0ff;
-            border: 2px solid #0ff;
-            padding: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        button:hover {
-            background: #0ff;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-            transform: scale(1.05);
-        }
-
-        @keyframes flicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% {
-                text-shadow: 0 0 10px #0ff,
-                    0 0 20px #0ff,
-                    0 0 30px #0ff,
-                    0 0 40px #0ff;
-            }
-            20%, 24%, 55% {
-                text-shadow: none;
-            }
-        }
-
-        /* Efecto de brillo al hacer hover en los inputs */
-        input:hover {
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-        }
-
-        /* Estilo para placeholders */
-        ::placeholder {
-            color: #0ff;
-            opacity: 0.5;
-        }
-    </style>
+    <link href="{{ asset('css/neon-styles.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="{{ asset('css/payment.css') }}" rel="stylesheet">
 </head>
 <body>
+<nav class="neon-nav">
+    
     <div class="container">
-        <h2 class="neon-text">Pago</h2>
-        <form action="{{ route('payment.process') }}" method="POST">
-            @csrf
-            <label for="card-number">Número de Tarjeta</label>
-            <input type="text" id="card-number" name="card_number" placeholder="•••• •••• •••• ••••" required>
+        <div class="header-content">
+            <!-- Logo y título -->
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="{{ asset('storage/images/logo.jpg') }}" alt="RetroGames Logo" height="50">
+                </div>
+                <h1 class="neon-text">RETRO<span style="color: var(--neon-blue);">GAMES</span></h1>
+            </div>
 
-            <label for="expiry-date">Fecha de Expiración</label>
-            <input type="month" id="expiry-date" name="expiry_date" required>
+            <!-- Menú de navegación -->
+            <div class="nav-links-container">
+                <!-- Links principales -->
+                <div class="nav-links">
+                    <!-- Tienda: devuelve a la página principal -->
+                    <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
+                        <i class="fas fa-store"></i> Tienda
+                    </a>
+                    <!-- Categorías: menú desplegable al pasar el ratón -->
+                    <div class="relative group">
+                        <button type="button" class="nav-link flex items-center">
+                            <i class="fas fa-list"></i> Categorías
+                            <i class="fas fa-caret-down ml-1"></i>
+                        </button>
+                        <div class="user-menu">
+                            @foreach ($categorias as $categoria)
+                            <a href="{{ route('home', ['categoria' => $categoria->id]) }}"
+                                class="user-menu-item">
+                                {{ $categoria->nombre }}
+                            </a>
+                            @endforeach
+                        </div>
+                    </div>
 
-            <label for="cvv">CVV</label>
-            <input type="text" id="cvv" name="cvv" placeholder="•••" required>
+                    <!-- Noticias: redirige a la página de noticias -->
+                    <a href="{{ route('noticias') }}" class="nav-link {{ request()->is('noticias') ? 'active' : '' }}">
+                        <i class="fas fa-newspaper"></i> Noticias
+                    </a>
 
-            <label for="name">Nombre en la Tarjeta</label>
-            <input type="text" id="name" name="name" placeholder="JUAN PEREZ" required>
+                    <!-- Sobre Nosotros: redirige a la página de sobre nosotros -->
+                    <a href="{{ route('about') }}" class="nav-link {{ request()->is('about') ? 'active' : '' }}">
+                        <i class="fas fa-info-circle"></i> Sobre Nosotros
+                    </a>
+                </div>
 
-            <button type="submit">Pagar</button>
-        </form>
+                <!-- Menú de autenticación -->
+                <div class="auth-links">
+                    @auth
+                    <!-- Menú desplegable usuario -->
+                    <div class="relative group">
+                        <button class="user-menu-button">
+                            <span>{{ Auth::user()->name }}</span>
+                            <i class="fas fa-caret-down"></i>
+                        </button>
+                        <div class="user-menu">
+                            <a href="{{ route('orders.index') }}" class="user-menu-item">
+                                <i class="fas fa-box-open"></i> Mis Pedidos
+                            </a>
+
+                            <a href="{{ route('profile.edit') }}" class="user-menu-item">
+                                <i class="fas fa-user-circle"></i> Perfil
+                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="user-menu-item">
+                                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    @else
+                    <a href="{{ route('login') }}" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="nav-link">
+                        <i class="fas fa-user-plus"></i> Registro
+                    </a>
+                    @endif
+                    @endauth
+
+                    <a href="{{ route('cart.index') }}" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i> Carrito
+                    </a>
+                </div>
+            </div>
+
+            <!-- Botón móvil -->
+            <button @click="open = !open" class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </div>
+
+    <!-- Menú móvil -->
+    <div x-show="open" class="mobile-menu">
+        @auth
+        <a href="{{ route('profile.edit') }}" class="mobile-link">
+            <i class="fas fa-user-circle"></i> Perfil
+        </a>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="mobile-link">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+            </button>
+        </form>
+        @else
+        <a href="{{ route('login') }}" class="mobile-link">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+        @if (Route::has('register'))
+        <a href="{{ route('register') }}" class="mobile-link">
+            <i class="fas fa-user-plus"></i> Registro
+        </a>
+        @endif
+        @endauth
+        <a href="{{ route('cart.index') }}" class="mobile-link">
+            <i class="fas fa-shopping-cart"></i> Carrito
+        </a>
+    </div>
+
+    <div class="grid-gradient"></div>
+</nav>
+<div class="payment-container">
+    <h2 class="neon-text">💳 Pago</h2>
+    <form action="{{ route('payment.process') }}" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="card-number">🔢 Número de Tarjeta</label>
+            <input type="text" id="card-number" name="card_number" 
+                   placeholder="•••• •••• •••• ••••" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="expiry-date">📅 Fecha de Expiración</label>
+            <input type="month" id="expiry-date" name="expiry_date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cvv">🔒 CVV</label>
+            <input type="text" id="cvv" name="cvv" placeholder="•••" required>
+        </div>
+
+        <div class="form-group">
+            <label for="name">👤 Nombre en la Tarjeta</label>
+            <input type="text" id="name" name="name" placeholder="JUAN PEREZ" required>
+        </div>
+
+        <button type="submit" class="neon-button">💵 Pagar Ahora</button>
+    </form>
+</div>
+
 </body>
 </html>

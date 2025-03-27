@@ -1,9 +1,16 @@
-<link href="{{ asset('css/neon-styles.css') }}" rel="stylesheet">
-<link href="{{ asset('css/order.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<div class="container">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSphere - Detalle de Noticia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap" rel="stylesheet">
+    <link href="{{ asset('css/neon-styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/news.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="scanline"></div>
     <nav class="neon-nav">
-
         <div class="container">
             <div class="header-content">
                 <!-- Logo y título -->
@@ -128,44 +135,45 @@
         <div class="grid-gradient"></div>
     </nav>
 
-    <h2 class="neon-text">📦 Mis Pedidos</h2>
+    <div class="grid-gradient"></div>
 
-    @forelse($orders as $order)
-    <div class="order-card">
-        <div class="order-header">
-            <h3>Pedido #{{ $order->id }}</h3>
-            <p>Fecha: {{ $order->created_at->format('d/m/Y H:i') }}</p>
-            <p>Total: ${{ number_format($order->total, 2) }}</p>
-            <p class="status">Estado: {{ ucfirst($order->status) }}</p>
-        </div>
+    <main>
+        <div class="container">
+            <article class="article-content">
+                <h1 class="news-title">Noticias 3</h1>
+                <p class="publish-date">Publicado el 25 de Octubre, 2023</p>
+                
+                <img src="https://via.placeholder.com/1200x400" alt="Cyberpunk 2077 Phantom Liberty" class="featured-image">
+                
+                <div class="article-body">
+                    <p>En un sorprendente anuncio, CD Projekt RED reveló que la esperada expansión Phantom Liberty para Cyberpunk 2077 ha superado las 5 millones de copias vendidas en su primera semana de lanzamiento. Este éxito marca un hito importante para el estudio polaco, especialmente después del lanzamiento problemático del juego base en 2020.</p>
 
-        <div class="order-items">
-            @foreach($order->items as $item)
-            <div class="item">
-                <img src="{{ asset('storage/images/juegos/' . $item->juego->imagen) }}" alt="{{ $item->juego->nombre }}">
-               
-                <div class="item-info">
-                    <h4>{{ $item->juego->nombre }}</h4>
-                    <p>Cantidad: {{ $item->quantity }}</p>
-                    <p>Precio unitario: ${{ number_format($item->unit_price, 2) }}</p>
+                    <p>La expansión, que cuenta con la participación del icónico actor Idris Elba en el papel del agente Solomon Reed, introduce una nueva campaña de espionaje en el distrito de Dogtown. Los jugadores han elogiado la profundidad de la narrativa y las mejoras técnicas significativas que acompañan esta actualización.</p>
+
+                    <p>El director del juego, Gabriel Amatangelo, comentó: "Estamos profundamente agradecidos con la comunidad por su apoyo continuo. Phantom Liberty representa todo lo que queríamos que fuera Cyberpunk 2077 desde el principio, y estamos emocionados de ver que los jugadores están disfrutando de esta nueva experiencia."</p>
+
+                    <p>Principales características de la expansión:
+                        <ul>
+                            <li>Nueva historia de 20+ horas con múltiples finales</li>
+                            <li>Sistema de habilidades renovado</li>
+                            <li>Mejoras radicales en el sistema de IA</li>
+                            <li>Nuevas armas y cyberware</li>
+                            <li>Soporte completo para tecnología Ray Tracing Overdrive</li>
+                        </ul>
+                    </p>
+
+                    <p>Los analistas de la industria señalan que este éxito podría marcar un punto de inflexión para CD Projekt RED, demostrando su capacidad para recuperar la confianza de los jugadores después de un lanzamiento problemático. Mientras tanto, los fanáticos ya especulan sobre posibles contenidos futuros y el anuncio esperado de una secuela.</p>
                 </div>
-            </div>
-            @endforeach
+            </article>
         </div>
+    </main>
 
-        <div class="payment-info">
-            <h4>💳 Información de pago</h4>
-            <div class="grid-gradient"></div>
-            <p>Método: {{ $order->payment->payment_method }}</p>
-            <p>Transacción: {{ $order->payment->transaction_id }}</p>
-            <p>Fecha pago: {{ $order->payment->payment_date }}</p>
+    <div class="grid-gradient"></div>
+
+    <footer>
+        <div class="container">
+            <p class="neon-text">© 2023 CyberSphere - Todos los derechos reservados</p>
         </div>
-    </div>
-    @empty
-    <p class="empty">No tienes pedidos registrados 🌌</p>
-    @endforelse
-
-    <div class="pagination">
-        {{ $orders->links() }}
-    </div>
-</div>
+    </footer>
+</body>
+</html>

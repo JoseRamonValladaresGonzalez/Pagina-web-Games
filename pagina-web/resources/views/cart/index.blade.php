@@ -1,182 +1,194 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compras</title>
     <!-- Agregar meta tag CSRF -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="{{ asset('css/carrito.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/neon-styles.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap">
-    <style>
-        body {
-            background-color: #0a0a0a;
-            font-family: 'Syne Mono', monospace;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 10px;
-            border: 2px solid #0ff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-        }
+    <nav class="neon-nav">
 
-        h2.neon-text {
-            color: #0ff;
-            text-align: center;
-            text-shadow: 0 0 10px #0ff;
-            animation: flicker 1.5s infinite alternate;
-            margin-bottom: 2rem;
-        }
+        <div class="container">
+            <div class="header-content">
+                <!-- Logo y título -->
+                <div class="logo-container">
+                    <div class="logo">
+                        <img src="{{ asset('storage/images/logo.jpg') }}" alt="RetroGames Logo" height="50">
+                    </div>
+                    <h1 class="neon-text">RETRO<span style="color: var(--neon-blue);">GAMES</span></h1>
+                </div>
 
-        .cart-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 1rem;
-        }
+                <!-- Menú de navegación -->
+                <div class="nav-links-container">
+                    <!-- Links principales -->
+                    <div class="nav-links">
+                        <!-- Tienda: devuelve a la página principal -->
+                        <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
+                            <i class="fas fa-store"></i> Tienda
+                        </a>
+                        <!-- Categorías: menú desplegable al pasar el ratón -->
+                        <div class="relative group">
+                            <button type="button" class="nav-link flex items-center">
+                                <i class="fas fa-list"></i> Categorías
+                                <i class="fas fa-caret-down ml-1"></i>
+                            </button>
+                            <div class="user-menu">
+                                @foreach ($categorias as $categoria)
+                                <a href="{{ route('home', ['categoria' => $categoria->id]) }}"
+                                    class="user-menu-item">
+                                    {{ $categoria->nombre }}
+                                </a>
+                                @endforeach
+                            </div>
+                        </div>
 
-        .cart-item {
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #0f0;
-            border-radius: 10px;
-            padding: 1rem;
-            transition: transform 0.3s ease;
-        }
+                        <!-- Noticias: redirige a la página de noticias -->
+                        <a href="{{ route('noticias') }}" class="nav-link {{ request()->is('noticias') ? 'active' : '' }}">
+                            <i class="fas fa-newspaper"></i> Noticias
+                        </a>
 
-        .cart-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-        }
+                        <!-- Sobre Nosotros: redirige a la página de sobre nosotros -->
+                        <a href="{{ route('about') }}" class="nav-link {{ request()->is('about') ? 'active' : '' }}">
+                            <i class="fas fa-info-circle"></i> Sobre Nosotros
+                        </a>
+                    </div>
 
-        .item-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 5px;
-            border: 1px solid #0ff;
-            margin-bottom: 1rem;
-        }
+                    <!-- Menú de autenticación -->
+                    <div class="auth-links">
+                        @auth
+                        <!-- Menú desplegable usuario -->
+                        <div class="relative group">
+                            <button class="user-menu-button">
+                                <span>{{ Auth::user()->name }}</span>
+                                <i class="fas fa-caret-down"></i>
+                            </button>
+                            <div class="user-menu">
+                                <a href="{{ route('orders.index') }}" class="user-menu-item">
+                                    <i class="fas fa-box-open"></i> Mis Pedidos
+                                </a>
 
-        .item-details {
-            text-align: center;
-        }
+                                <a href="{{ route('profile.edit') }}" class="user-menu-item">
+                                    <i class="fas fa-user-circle"></i> Perfil
+                                </a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="user-menu-item">
+                                        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        @else
+                        <a href="{{ route('login') }}" class="nav-link">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="nav-link">
+                            <i class="fas fa-user-plus"></i> Registro
+                        </a>
+                        @endif
+                        @endauth
 
-        .item-details p {
-            margin: 0.5rem 0;
-            color: #0ff;
-            text-shadow: 0 0 5px #0ff;
-        }
+                        <a href="{{ route('cart.index') }}" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i> Carrito
+                        </a>
+                    </div>
+                </div>
 
-        .button-group {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
+                <!-- Botón móvil -->
+                <button @click="open = !open" class="mobile-menu-button">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
 
-        #vaciar-carrito, .pay-button {
-            background: #000;
-            color: #0ff;
-            border: 2px solid #0ff;
-            padding: 12px 24px;
-            font-size: 1.1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
+        <!-- Menú móvil -->
+        <div x-show="open" class="mobile-menu">
+            @auth
+            <a href="{{ route('profile.edit') }}" class="mobile-link">
+                <i class="fas fa-user-circle"></i> Perfil
+            </a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="mobile-link">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                </button>
+            </form>
+            @else
+            <a href="{{ route('login') }}" class="mobile-link">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            @if (Route::has('register'))
+            <a href="{{ route('register') }}" class="mobile-link">
+                <i class="fas fa-user-plus"></i> Registro
+            </a>
+            @endif
+            @endauth
+            <a href="{{ route('cart.index') }}" class="mobile-link">
+                <i class="fas fa-shopping-cart"></i> Carrito
+            </a>
+        </div>
 
-        #vaciar-carrito:hover, .pay-button:hover {
-            background: #0ff;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
+        <div class="grid-gradient"></div>
+    </nav>
 
-        .empty-cart {
-            text-align: center;
-            color: #0f0;
-            font-size: 1.5rem;
-            text-shadow: 0 0 10px #0f0;
-            padding: 2rem;
-        }
-
-        @keyframes flicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% {
-                text-shadow: 0 0 10px #0ff,
-                    0 0 20px #0ff,
-                    0 0 30px #0ff,
-                    0 0 40px #0ff;
-            }
-            20%, 24%, 55% {
-                text-shadow: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .cart-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
-        }
-    </style>
 </head>
+
 <body>
+
+
     <div class="container">
         <h2 class="neon-text">🛒 Tu Carrito</h2>
         @if(count($cart))
-            <div class="cart-grid">
-                @foreach($cart as $item)
-                <div class="cart-item">
-                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="item-image">
-                    <div class="item-details">
-                        <p>📛 {{ $item['name'] }}</p>
-                        <p>💲 Precio: ${{ number_format($item['price'], 2) }}</p>
-                        <p>🔢 Cantidad: {{ $item['quantity'] }}</p>
-                        <p>💠 Total: ${{ number_format($item['price'] * $item['quantity'], 2) }}</p>
-                    </div>
+        <div class="cart-grid">
+            @foreach($cart as $item)
+            <div class="cart-item">
+                <img src="{{ asset('storage/images/juegos/' . $item['image']) }}" alt="{{ $item['name'] }}" class="item-image">
+                <div class="item-details">
+                    <p>📛 {{ $item['name'] }}</p>
+                    <p>💲 Precio: ${{ number_format($item['price'], 2) }}</p>
+                    <p>🔢 Cantidad: {{ $item['quantity'] }}</p>
+                    <p>💠 Total: ${{ number_format($item['price'] * $item['quantity'], 2) }}</p>
                 </div>
-                @endforeach
             </div>
-            <div class="button-group">
-                <button id="vaciar-carrito">🗑️ Vaciar Carrito</button>
-                <a href="{{ route('payment.form') }}" class="pay-button">💳 Pagar</a>
-            </div>
+            @endforeach
+        </div>
+        <div class="button-group">
+            <button id="vaciar-carrito">🗑️ Vaciar Carrito</button>
+            <a href="{{ route('payment.form') }}" class="pay-button">💳 Pagar</a>
+        </div>
         @else
-            <p class="empty-cart">🚫 Tu carrito está vacío.</p>
+        <p class="empty-cart">🚫 Tu carrito está vacío.</p>
         @endif
     </div>
     <script>
         // Asegurar que el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
             const vaciarBtn = document.getElementById('vaciar-carrito');
-            
+
             if (vaciarBtn) {
                 vaciarBtn.addEventListener('click', function() {
                     fetch("{{ route('cart.clear') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.message);
-                        location.reload();
-                    })
-                    .catch(error => console.error('Error:', error));
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            location.reload();
+                        })
+                        .catch(error => console.error('Error:', error));
                 });
             }
         });
     </script>
 </body>
+
 </html>

@@ -15,6 +15,7 @@ body {
 }
 
 .container {
+    
     width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;
@@ -41,37 +42,41 @@ body {
 
 /* Header Styles */
 header {
-    padding: 2rem 0;
+    padding: 1rem 0;
     position: relative;
 }
 
 .header-content {
+    justify-content: flex-start; 
+    margin-left: -45px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
 }
 
 .logo-container {
+    transform: translateX(-10px);
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 0.8rem;
 }
 
 .logo {
-    width: 70px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 2px solid var(--neon-pink);
+    border: 1px solid var(--neon-pink);
     overflow: hidden;
-    box-shadow: 0 0 20px var(--neon-pink);
+    box-shadow: 0 0 10px var(--neon-pink);
 }
-
+.logo img {
+    height: 38px; 
+}
 .neon-text {
-    text-shadow: 0 0 10px var(--neon-pink),
-                0 0 20px var(--neon-pink),
-                0 0 30px var(--neon-pink);
-    font-size: 2.5rem;
+    font-size: 1.5rem; /* Reducido de 2.5rem */
+    text-shadow: 0 0 5px var(--neon-pink),
+                 0 0 10px var(--neon-pink),
+                 0 0 15px var(--neon-pink); /* Efecto neon más sutil */
 }
 
 
@@ -89,6 +94,39 @@ main {
     overflow-x: auto;
     padding: 2rem 0;
     scroll-behavior: smooth;
+    
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 80%;
+    transform: translateY(-50%);
+    background-color: rgba(10, 10, 26, 0.5); /* Fondo semi-transparente */
+    border: 2px solid var(--neon-pink);
+    color: var(--neon-blue);
+    font-size: 3rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    height: 100px; /* Altura aumentada */
+}
+.carousel-btn:hover {
+    background-color: rgba(10, 10, 26, 0.8);
+    box-shadow: 0 0 20px var(--neon-pink);
+    color: var(--neon-pink);
+}
+.carousel-btn.left {
+    left: 0;
+    margin-left: -20px; /* Ajuste de posición */
+}
+
+.carousel-btn.right {
+    right: 0;
+    margin-right: -20px; /* Ajuste de posición */
 }
 
 .carousel-container::-webkit-scrollbar {

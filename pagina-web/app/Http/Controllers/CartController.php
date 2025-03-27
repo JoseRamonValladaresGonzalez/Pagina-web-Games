@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Juegos;
 use Illuminate\Http\Request;
+use App\Models\Categorias;
 
 class CartController extends Controller
 {
@@ -47,8 +48,18 @@ class CartController extends Controller
 
     public function index()
     {
+        $orders = auth()->user()->orders()->with(['items.juego', 'payment']) ->latest()->paginate(10);
+
+        $categorias = Categorias::all();
+        $juegos = Juegos::query();
+    
+        if (request()->has('categoria')) {
+            $juegos->where('categoria_id', request('categoria'));
+        }
+    
+        $juegos = $juegos->get();
         $cart = session()->get('cart', []);
-        return view('cart.index', compact('cart'));
+        return view('cart.index', compact('cart', 'juegos', 'categorias'));
     }
 
     public function clear()

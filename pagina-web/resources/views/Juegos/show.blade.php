@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <title>{{ $juego->nombre }} - Detalles del Producto</title>
     <link href="{{ asset('css/neon-styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/producto.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body class="producto-show">
@@ -27,16 +30,16 @@
                         <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
                             <i class="fas fa-store"></i> Tienda
                         </a>
-
                         <!-- Categorías: menú desplegable al pasar el ratón -->
                         <div class="relative group">
-                            <button type="button" class="nav-link flex items-center bg-transparent border-0">
+                            <button type="button" class="nav-link flex items-center">
                                 <i class="fas fa-list"></i> Categorías
                                 <i class="fas fa-caret-down ml-1"></i>
                             </button>
                             <div class="user-menu">
                                 @foreach ($categorias as $categoria)
-                                <a href="{{ route('categorias.show', $categoria->id) }}" class="user-menu-item">
+                                <a href="{{ route('home', ['categoria' => $categoria->id]) }}"
+                                    class="user-menu-item">
                                     {{ $categoria->nombre }}
                                 </a>
                                 @endforeach
@@ -57,7 +60,6 @@
                     <!-- Menú de autenticación -->
                     <div class="auth-links">
                         @auth
-
                         <!-- Menú desplegable usuario -->
                         <div class="relative group">
                             <button class="user-menu-button">
@@ -65,6 +67,10 @@
                                 <i class="fas fa-caret-down"></i>
                             </button>
                             <div class="user-menu">
+                                <a href="{{ route('orders.index') }}" class="user-menu-item">
+                                    <i class="fas fa-box-open"></i> Mis Pedidos
+                                </a>
+
                                 <a href="{{ route('profile.edit') }}" class="user-menu-item">
                                     <i class="fas fa-user-circle"></i> Perfil
                                 </a>
@@ -130,23 +136,64 @@
         <div class="grid-gradient"></div>
     </nav>
 
-
-    <div class="container">
-        <div class="game-card" style="padding: 2rem; border: none; background: rgba(10, 10, 26, 0.8);">
-            <h1 class="neon-text">{{ $juego->nombre }}</h1>
-            <div class="product-details">
-                <div class="product-image">
-                    <img src="{{ asset('storage/images/' . $juego->imagen) }}" alt="{{ $juego->nombre }}" 
-                         style="width: 100%; max-width: 400px; border: 2px solid var(--neon-pink); 
-                                box-shadow: 0 0 20px var(--neon-pink);">
+    <div class="container neon-details-container">
+        <div class="neon-game-card">
+            <h1 class="neon-title flicker">{{ $juego->nombre }}</h1>
+            
+            <div class="grid-container">
+                <!-- Columna Imagen -->
+                <div class="image-column">
+                    <img src="{{ asset('storage/images/' . $juego->imagen) }}" 
+                         class="neon-image" 
+                         alt="{{ $juego->nombre }}">
                 </div>
-                <div class="product-info">
-                    <p><strong>Descripción:</strong></p>
-                    <p>{{ $juego->descripcion }}</p>
-                    <!-- Categoría agregada aquí -->
-                    <p><strong>Categoría:</strong> {{ $juego->categoria->nombre }}</p>
-                    <p><strong>Precio:</strong> ${{ $juego->precio }}</p>
-                    <button class="add-to-cart">Añadir al carrito</button>
+
+                <!-- Columna Detalles -->
+                <div class="details-column">
+                    <div class="description-box">
+                        <p class="neon-description">{{ $juego->descripcion }}</p>
+                    </div>
+
+                    <div class="attributes-grid">
+                        <!-- Fila 1 -->
+                        <div class="attribute-item">
+                            <span class="attribute-label">💾 Plataforma</span>
+                            <span class="attribute-value">{{ $juego->plataforma }}</span>
+                        </div>
+                        
+                        <div class="attribute-item">
+                            <span class="attribute-label">🎮 Género</span>
+                            <span class="attribute-value">{{ $juego->genero }}</span>
+                        </div>
+
+                        <!-- Fila 2 -->
+                        <div class="attribute-item">
+                            <span class="attribute-label">📅 Año</span>
+                            <span class="attribute-value">{{ $juego->año }}</span>
+                        </div>
+                        
+                        <div class="attribute-item">
+                            <span class="attribute-label">⭐ Valoración</span>
+                            <span class="attribute-value">{{ $juego->valoracion }}</span>
+                        </div>
+
+                        <!-- Fila 3 -->
+                        <div class="attribute-item full-width">
+                            <span class="attribute-label">🏷️ Precio</span>
+                            <span class="price-value">${{ number_format($juego->precio, 2) }}</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                    <a href="{{ route('cart.index') }}" class="mobile-link">
+                <i class="fas fa-shopping-cart"></i> Añadir al carrito
+
+                 </a>
+                           
+                        <a href="{{ url('/') }}" class="neon-button cyan">
+                            🏠 Volver a la Tienda
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

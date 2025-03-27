@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +10,7 @@
   <!-- Se puede incluir Font Awesome para los íconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
   <!-- Nav bar -->
   <nav class="neon-nav">
@@ -30,16 +32,16 @@
                         <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
                             <i class="fas fa-store"></i> Tienda
                         </a>
-
                         <!-- Categorías: menú desplegable al pasar el ratón -->
                         <div class="relative group">
-                            <button type="button" class="nav-link flex items-center bg-transparent border-0">
+                            <button type="button" class="nav-link flex items-center">
                                 <i class="fas fa-list"></i> Categorías
                                 <i class="fas fa-caret-down ml-1"></i>
                             </button>
                             <div class="user-menu">
                                 @foreach ($categorias as $categoria)
-                                <a href="{{ route('categorias.show', $categoria->id) }}" class="user-menu-item">
+                                <a href="{{ route('home', ['categoria' => $categoria->id]) }}"
+                                    class="user-menu-item">
                                     {{ $categoria->nombre }}
                                 </a>
                                 @endforeach
@@ -60,7 +62,6 @@
                     <!-- Menú de autenticación -->
                     <div class="auth-links">
                         @auth
-
                         <!-- Menú desplegable usuario -->
                         <div class="relative group">
                             <button class="user-menu-button">
@@ -68,6 +69,10 @@
                                 <i class="fas fa-caret-down"></i>
                             </button>
                             <div class="user-menu">
+                                <a href="{{ route('orders.index') }}" class="user-menu-item">
+                                    <i class="fas fa-box-open"></i> Mis Pedidos
+                                </a>
+
                                 <a href="{{ route('profile.edit') }}" class="user-menu-item">
                                     <i class="fas fa-user-circle"></i> Perfil
                                 </a>
@@ -133,24 +138,23 @@
         <div class="grid-gradient"></div>
     </nav>
 
-
   <!-- Main Content -->
   <main class="container">
     <!-- Carrusel de imágenes -->
     <section class="carousel-container">
       <div class="game-card">
         <a href="#noticia1">
-          <img class="game-image" src="https://via.placeholder.com/300x400?text=Noticia+1" alt="Noticia 1">
+          <img class="game-image" src="{{ asset('storage/images/noticias/noticia1.jpg') }}" alt="Noticia 1">
         </a>
       </div>
       <div class="game-card">
         <a href="#noticia2">
-          <img class="game-image" src="https://via.placeholder.com/300x400?text=Noticia+2" alt="Noticia 2">
+          <img class="game-image" src="{{ asset('storage/images/noticias/noticia2.jpg') }}" alt="Noticia 2">
         </a>
       </div>
       <div class="game-card">
         <a href="#noticia3">
-          <img class="game-image" src="https://via.placeholder.com/300x400?text=Noticia+3" alt="Noticia 3">
+          <img class="game-image" src="{{ asset('storage/images/noticias/noticia3.jpg') }}" alt="Noticia 3">
         </a>
       </div>
       <!-- Puedes agregar más imágenes -->
@@ -166,21 +170,21 @@
       <article id="noticia1">
         <h3>Título de la Noticia 1</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel elit sit amet neque vehicula accumsan.</p>
-        <a class="nav-link" href="#">Leer más</a>
+        <a class="nav-link" href="{{ route('noticias.detalle', 1) }}">Leer más</a>
       </article>
       <hr>
       <!-- Noticia 2 -->
       <article id="noticia2">
         <h3>Título de la Noticia 2</h3>
         <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-        <a class="nav-link" href="#">Leer más</a>
+        <a class="nav-link" href="{{ route('noticias.detalle', 2) }}">Leer más</a>
       </article>
       <hr>
       <!-- Noticia 3 -->
       <article id="noticia3">
         <h3>Título de la Noticia 3</h3>
         <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        <a class="nav-link" href="#">Leer más</a>
+        <a class="nav-link"  href="{{ route('noticias.detalle', 3) }}">Leer más</a>
       </article>
     </section>
   </main>
@@ -195,4 +199,5 @@
   <!-- Efecto Scanline -->
   <div class="scanline"></div>
 </body>
+
 </html>

@@ -15,8 +15,15 @@ class JuegosController extends Controller
     public function index()
     {
         $categorias = Categorias::all();
-        $juegos = Juegos::all();
-          return view('juegos.index', compact('juegos', 'categorias'));
+        $juegos = Juegos::query();
+    
+        if (request()->has('categoria')) {
+            $juegos->where('categoria_id', request('categoria'));
+        }
+    
+        $juegos = $juegos->get();
+    
+        return view('juegos.index', compact('juegos', 'categorias'));
     }
 
     /**

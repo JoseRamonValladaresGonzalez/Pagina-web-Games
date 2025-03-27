@@ -9,6 +9,8 @@ use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\JuegosController;
 use App\Http\Controllers\CartController;
+use App\Models\Categorias;
+use App\Models\Juegos;
 
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -17,9 +19,22 @@ Route::get('/', [JuegosController::class, 'index'])->name('home');
 Route::get('/juegos/{id}', [JuegosController::class, 'show'])->name('juegos.show');
 Route::get('/categorias/{id}', [CategoriasController::class, 'show'])->name('categorias.show');
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
-Route::get('/productos/{id}', [ProductoController::class, 'show'])->name('productos.show');
 //vistas de noticias y about
 Route::get('/noticias', [VistasController::class, 'noticias'])->name('noticias');
+//detalle de noticias
+//ONLY FOR TESTING, NEVER USE CODE LIKE THIS IN A REAL PROJECT
+//ALL OF THIS LOGIC GO TO THE CONTROLLER
+Route::get('/noticias/{id}', function ($id) {
+    $categorias = Categorias::all();
+    
+    $juegos = Juegos::query();
+    if (request()->has('categoria')) {
+        $juegos->where('categoria_id', request('categoria'));
+    }
+    $juegos = $juegos->get();
+
+    return view("noticia{$id}", compact('categorias', 'juegos'));
+})->where('id', '[1-3]')->name('noticias.detalle');
 Route::get('/about', [VistasController::class, 'about'])->name('about');
 
 // Carrito

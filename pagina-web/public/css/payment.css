@@ -1,0 +1,85 @@
+.payment-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(10, 10, 26, 0.9);
+    border: 2px solid var(--neon-pink);
+    border-radius: 10px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+    position: relative;
+}
+
+.payment-container::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 10px;
+    z-index: -1;
+    background: linear-gradient(
+        45deg,
+        var(--neon-pink),
+        var(--neon-blue),
+        var(--neon-pink)
+    );
+    animation: neon-glow 3s linear infinite;
+    opacity: 0.5;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--neon-blue);
+    text-shadow: 0 0 8px var(--neon-blue);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--neon-pink);
+    border-radius: 5px;
+    color: var(--neon-blue);
+    font-family: 'Syne Mono', monospace;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    box-shadow: 0 0 15px var(--neon-pink);
+    border-color: var(--neon-blue);
+}
+
+.neon-button {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    border: 2px solid var(--neon-blue);
+    color: var(--neon-blue);
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+.neon-button:hover {
+    background: var(--neon-blue);
+    color: var(--dark-bg);
+    box-shadow: 0 0 25px var(--neon-blue);
+}
+
+@media (max-width: 768px) {
+    .payment-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}
