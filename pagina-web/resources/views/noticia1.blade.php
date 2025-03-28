@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberSphere - Detalle de Noticia</title>
+    <title>RetroWave Games</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="{{ asset('css/neon-styles.css') }}" rel="stylesheet">
     <link href="{{ asset('css/news.css') }}" rel="stylesheet">
 </head>
@@ -99,21 +100,51 @@
                 </div>
 
                 <!-- Botón móvil -->
-                <button @click="open = !open" class="mobile-menu-button">
+                <button id="mobileMenuButton" class="mobile-menu-button">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
 
         <!-- Menú móvil -->
-        <div x-show="open" class="mobile-menu">
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="{{ url('/') }}" class="mobile-link">
+                <i class="fas fa-store"></i> Tienda
+            </a>
+
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-button">
+                    <i class="fas fa-list"></i> Categorías <i class="fas fa-caret-down"></i>
+                </button>
+                <div class="mobile-dropdown-content">
+                    @foreach ($categorias as $categoria)
+                    <a href="{{ route('home', ['categoria' => $categoria->id]) }}" class="mobile-link">
+                        {{ $categoria->nombre }}
+                    </a>
+                    @endforeach
+                </div>
+            </div>
+
+            <a href="{{ route('noticias') }}" class="mobile-link">
+                <i class="fas fa-newspaper"></i> Noticias
+            </a>
+
+            <a href="{{ route('about') }}" class="mobile-link">
+                <i class="fas fa-info-circle"></i> Sobre Nosotros
+            </a>
+
             @auth
+            <a href="{{ route('orders.index') }}" class="mobile-link">
+                <i class="fas fa-box-open"></i> Mis Pedidos
+            </a>
+
             <a href="{{ route('profile.edit') }}" class="mobile-link">
                 <i class="fas fa-user-circle"></i> Perfil
             </a>
+
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="mobile-link">
+                <button type="submit" class="mobile-link" style="width: 100%; text-align: left; background: none; border: none; color: inherit;">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </form>
@@ -127,6 +158,7 @@
             </a>
             @endif
             @endauth
+
             <a href="{{ route('cart.index') }}" class="mobile-link">
                 <i class="fas fa-shopping-cart"></i> Carrito
             </a>
@@ -143,7 +175,7 @@
                 <h1 class="news-title">Cyberpunk 2077: Phantom Liberty supera los 5 millones de copias vendidas</h1>
                 <p class="publish-date">Publicado el 25 de Octubre, 2023</p>
                 
-                <img src="https://via.placeholder.com/1200x400" alt="Cyberpunk 2077 Phantom Liberty" class="featured-image">
+                <img src="{{ asset('storage/images/noticias/noticia1.jpg') }}" alt="Cyberpunk 2077 Phantom Liberty" class="featured-image">
                 
                 <div class="article-body">
                     <p>En un sorprendente anuncio, CD Projekt RED reveló que la esperada expansión Phantom Liberty para Cyberpunk 2077 ha superado las 5 millones de copias vendidas en su primera semana de lanzamiento. Este éxito marca un hito importante para el estudio polaco, especialmente después del lanzamiento problemático del juego base en 2020.</p>
@@ -172,8 +204,23 @@
 
     <footer>
         <div class="container">
-            <p class="neon-text">© 2023 CyberSphere - Todos los derechos reservados</p>
+            <p class="neon-text">© 2025 RetroGames - Powered by RetroWave</p>
         </div>
     </footer>
+    
+    <script>
+        // Menú principal móvil
+        document.getElementById('mobileMenuButton').addEventListener('click', function() {
+            document.getElementById('mobileMenu').classList.toggle('show');
+        });
+
+        // Dropdowns móviles
+        document.querySelectorAll('.mobile-dropdown-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const dropdownContent = this.nextElementSibling;
+                dropdownContent.classList.toggle('show');
+            });
+        });
+    </script>
 </body>
 </html>

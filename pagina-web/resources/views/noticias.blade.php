@@ -102,21 +102,51 @@
                 </div>
 
                 <!-- Botón móvil -->
-                <button @click="open = !open" class="mobile-menu-button">
+                <button id="mobileMenuButton" class="mobile-menu-button">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
 
         <!-- Menú móvil -->
-        <div x-show="open" class="mobile-menu">
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="{{ url('/') }}" class="mobile-link">
+                <i class="fas fa-store"></i> Tienda
+            </a>
+
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-button">
+                    <i class="fas fa-list"></i> Categorías <i class="fas fa-caret-down"></i>
+                </button>
+                <div class="mobile-dropdown-content">
+                    @foreach ($categorias as $categoria)
+                    <a href="{{ route('home', ['categoria' => $categoria->id]) }}" class="mobile-link">
+                        {{ $categoria->nombre }}
+                    </a>
+                    @endforeach
+                </div>
+            </div>
+
+            <a href="{{ route('noticias') }}" class="mobile-link">
+                <i class="fas fa-newspaper"></i> Noticias
+            </a>
+
+            <a href="{{ route('about') }}" class="mobile-link">
+                <i class="fas fa-info-circle"></i> Sobre Nosotros
+            </a>
+
             @auth
+            <a href="{{ route('orders.index') }}" class="mobile-link">
+                <i class="fas fa-box-open"></i> Mis Pedidos
+            </a>
+
             <a href="{{ route('profile.edit') }}" class="mobile-link">
                 <i class="fas fa-user-circle"></i> Perfil
             </a>
+
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="mobile-link">
+                <button type="submit" class="mobile-link" style="width: 100%; text-align: left; background: none; border: none; color: inherit;">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </form>
@@ -130,6 +160,7 @@
             </a>
             @endif
             @endauth
+
             <a href="{{ route('cart.index') }}" class="mobile-link">
                 <i class="fas fa-shopping-cart"></i> Carrito
             </a>
@@ -137,6 +168,7 @@
 
         <div class="grid-gradient"></div>
     </nav>
+
 
   <!-- Main Content -->
   <main class="container">
@@ -198,6 +230,21 @@
 
   <!-- Efecto Scanline -->
   <div class="scanline"></div>
+
+  <script>
+        // Menú principal móvil
+        document.getElementById('mobileMenuButton').addEventListener('click', function() {
+            document.getElementById('mobileMenu').classList.toggle('show');
+        });
+
+        // Dropdowns móviles
+        document.querySelectorAll('.mobile-dropdown-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const dropdownContent = this.nextElementSibling;
+                dropdownContent.classList.toggle('show');
+            });
+        });
+    </script>
 </body>
 
 </html>

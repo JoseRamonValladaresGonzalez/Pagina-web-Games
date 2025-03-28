@@ -1,9 +1,15 @@
-<link href="{{ asset('css/neon-styles.css') }}" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="es">
+<head>
 <link href="{{ asset('css/order.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<div class="container">
-    <nav class="neon-nav">
+<link href="{{ asset('css/neon-styles.css') }}" rel="stylesheet">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="neon-nav">
         <div class="container">
             <div class="header-content">
                 <!-- Logo y título -->
@@ -92,21 +98,51 @@
                 </div>
 
                 <!-- Botón móvil -->
-                <button @click="open = !open" class="mobile-menu-button">
+                <button id="mobileMenuButton" class="mobile-menu-button">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
 
         <!-- Menú móvil -->
-        <div x-show="open" class="mobile-menu">
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="{{ url('/') }}" class="mobile-link">
+                <i class="fas fa-store"></i> Tienda
+            </a>
+
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-button">
+                    <i class="fas fa-list"></i> Categorías <i class="fas fa-caret-down"></i>
+                </button>
+                <div class="mobile-dropdown-content">
+                    @foreach ($categorias as $categoria)
+                    <a href="{{ route('home', ['categoria' => $categoria->id]) }}" class="mobile-link">
+                        {{ $categoria->nombre }}
+                    </a>
+                    @endforeach
+                </div>
+            </div>
+
+            <a href="{{ route('noticias') }}" class="mobile-link">
+                <i class="fas fa-newspaper"></i> Noticias
+            </a>
+
+            <a href="{{ route('about') }}" class="mobile-link">
+                <i class="fas fa-info-circle"></i> Sobre Nosotros
+            </a>
+
             @auth
+            <a href="{{ route('orders.index') }}" class="mobile-link">
+                <i class="fas fa-box-open"></i> Mis Pedidos
+            </a>
+
             <a href="{{ route('profile.edit') }}" class="mobile-link">
                 <i class="fas fa-user-circle"></i> Perfil
             </a>
+
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="mobile-link">
+                <button type="submit" class="mobile-link" style="width: 100%; text-align: left; background: none; border: none; color: inherit;">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </form>
@@ -120,6 +156,7 @@
             </a>
             @endif
             @endauth
+
             <a href="{{ route('cart.index') }}" class="mobile-link">
                 <i class="fas fa-shopping-cart"></i> Carrito
             </a>
@@ -128,6 +165,8 @@
         <div class="grid-gradient"></div>
     </nav>
 
+<div class="container">
+   
     <h2 class="neon-text">📦 Mis Pedidos</h2>
 
     @forelse($orders as $order)
@@ -143,7 +182,7 @@
             @foreach($order->items as $item)
             <div class="item">
                 <img src="{{ asset('storage/images/juegos/' . $item->juego->imagen) }}" alt="{{ $item->juego->nombre }}">
-               
+
                 <div class="item-info">
                     <h4>{{ $item->juego->nombre }}</h4>
                     <p>Cantidad: {{ $item->quantity }}</p>
@@ -169,3 +208,19 @@
         {{ $orders->links() }}
     </div>
 </div>
+<script>
+        // Menú principal móvil
+        document.getElementById('mobileMenuButton').addEventListener('click', function() {
+            document.getElementById('mobileMenu').classList.toggle('show');
+        });
+
+        // Dropdowns móviles
+        document.querySelectorAll('.mobile-dropdown-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const dropdownContent = this.nextElementSibling;
+                dropdownContent.classList.toggle('show');
+            });
+        });
+    </script>
+    </body>
+    </html>

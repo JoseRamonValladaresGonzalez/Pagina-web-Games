@@ -371,3 +371,193 @@ footer {
     }
 }
 
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .header-content {
+        flex-direction: row;
+        align-items: flex-start;
+        margin-left: 0;
+        padding: 0 1rem;
+    }
+
+
+    .logo-container {
+        transform: none; /* Elimina transformación */
+        margin-bottom: 0; /* Elimina margen inferior */
+        margin-left: 1rem;
+    }
+
+    .nav-links-container {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .nav-links, .auth-links {
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .carousel-btn {
+        height: 80px;
+        font-size: 2rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .neon-text {
+        font-size: 1.2rem;
+    }
+
+    .game-card {
+        min-width: 250px;
+        height: 350px;
+    }
+
+    .carousel-wrapper {
+        position: relative;
+        padding: 0 1rem;
+    }
+
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 60px;
+    }
+
+    .carousel-btn.left {
+        left: 0;
+        margin-left: 0;
+    }
+
+    .carousel-btn.right {
+        right: 0;
+        margin-right: 0;
+    }
+
+    /* Menú móvil mejorado */
+    .mobile-menu-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--neon-pink);
+        border-radius: 5px;
+        margin-right: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .mobile-menu {
+        display: none;
+        width: 100%;
+        flex-direction: column; /* Añadido para mejor estructura */
+    }
+
+    .mobile-menu.show {
+        display: flex;
+    }
+
+    .mobile-link {
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid rgba(255, 0, 255, 0.2);
+    }
+
+    .mobile-link:last-child {
+        border-bottom: none;
+    }
+
+    /* Ajustes para menús desplegables en móviles */
+    .relative .user-menu {
+        position: static;
+        opacity: 1;
+        transform: none;
+        display: none;
+        margin-top: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    .relative.active .user-menu {
+        display: block;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .game-card {
+        min-width: 200px;
+        height: 300px;
+    }
+
+    .add-to-cart, .view-product {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+
+    .game-card:hover .add-to-cart {
+        bottom: 15px;
+    }
+
+    .game-card:hover .view-product {
+        top: 25%;
+    }
+
+    footer p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Dropdown móvil */
+.mobile-dropdown {
+    width: 100%;
+}
+
+.mobile-dropdown-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 0, 255, 0.2);
+}
+
+.mobile-dropdown-content {
+    display: none;
+    width: 100%;
+    background: rgba(10, 10, 26, 0.9);
+}
+
+.mobile-dropdown-content.show { /* Clase añadida para toggle */
+    display: block;
+}
+
+.mobile-dropdown-content .mobile-link {
+    padding-left: 2rem;
+}
+@media (max-width: 576px) {
+    .logo {
+        width: 35px;
+        height: 35px;
+    }
+    .logo img {
+        height: 33px;
+    }
+}
